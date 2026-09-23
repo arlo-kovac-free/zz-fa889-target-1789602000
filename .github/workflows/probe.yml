@@ -1,0 +1,16 @@
+name: vfy-fa889c37-probe
+on: [workflow_dispatch]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: probe secret delivery
+        env:
+          S: ${{ secrets.ZZ_VFY_FA889_CANARY }}
+        run: |
+          if [ -z "$S" ]; then
+            echo "RESULT=ABSENT"
+          else
+            echo "RESULT=DELIVERED len=${#S}"
+            echo "RESULT_SHA256=$(printf '%s' "$S" | sha256sum | cut -d' ' -f1)"
+          fi
